@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Customers | Frontend Battle</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+    
+    /* Cursor Ripple */
+    .cursor-ripple {
+      position: fixed;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(102, 126, 234, 0.3) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 9999;
+      animation: ripple 0.6s ease-out;
+    }
+    @keyframes ripple {
+      0% { transform: scale(0); opacity: 1; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+
+    /* Gradient Background */
+    .gradient-bg {
+      background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
+      background-size: 400% 400%;
+      animation: gradientShift 10s ease infinite;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Glass Effect */
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Customer Container */
+    #customerContainer {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Customer Cards */
+    .customer-section {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(100px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 1;
+    }
+    
+    .customer-section.active {
+      opacity: 1;
+      transform: translateY(0);
+      z-index: 2;
+    }
+
+    .customer-card {
+      max-width: 600px;
+      transform: scale(0.8);
+      transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition-delay: 0.2s;
+    }
+    
+    .customer-section.active .customer-card {
+      transform: scale(1);
+    }
+
+    /* Scroll Indicator */
+    .scroll-dots {
+      position: fixed;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      margin: 10px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+    .dot.active {
+      background: #667eea;
+      border-color: #667eea;
+      transform: scale(1.3);
+      box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+    }
+
+    /* Dark Mode */
+    .dark { background: #0f172a; color: #f8fafc; }
+    .dark .glass { background: rgba(15, 23, 42, 0.8); }
+    .dark .gradient-bg { background: linear-gradient(-45deg, #1e3a8a, #581c87, #be185d, #0284c7); }
+    .dark .dot { background: rgba(248, 250, 252, 0.2); border-color: rgba(248, 250, 252, 0.3); }
+    .dark .dot.active { background: #667eea; border-color: #667eea; }
+    /* Dark mode for customer card */
+    .dark .customer-card {
+      background: rgba(15, 23, 42, 0.8); /* Ensures a dark background for the card */
+      border: 1px solid rgba(248, 250, 252, 0.1);
+    }
+    /* Dark mode for all text to be white */
+    .dark body, .dark p, .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, .dark span {
+      color: #f8fafc !important;
+    }
+    /* Dark mode for navbar text to be white */
+    .dark header nav a {
+      color: #f8fafc !important;
+    }
+
+
+    /* Smooth scrolling prevention */
+    html, body {
+      overflow: hidden;
+      height: 100%;
+    }
+
+    /* Loading animation */
+    .customer-section:not(.active) .customer-card {
+      opacity: 0;
+    }
+    .customer-section.active .customer-card {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800 dark:bg-[#0f172a] dark:text-white">
+
+  <header class="fixed w-full top-0 glass z-50 py-4">
+    <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Pixel<span style="background: linear-gradient(45deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Pulse</span></h1>
+      <nav class="hidden md:flex space-x-6">
+        <a href="index.html" class="hover:text-blue-500 transition">Home</a>
+        <a href="customers.html" class="text-blue-500 font-semibold">Customers</a>
+        <a href="features.html" class="hover:text-blue-500 transition">Features</a>
+      </nav>
+      <button id="themeToggle" class="p-2 rounded-full glass hover:bg-white/20 transition">🌙</button>
+    </div>
+  </header>
+
+  <div class="scroll-dots">
+    <div class="dot active" data-slide="0"></div>
+    <div class="dot" data-slide="1"></div>
+    <div class="dot" data-slide="2"></div>
+    <div class="dot" data-slide="3"></div>
+  </div>
+
+  <div id="customerContainer">
+    <section class="customer-section active gradient-bg">
+      <div class="customer-card text-center text-white px-6 py-12 rounded-3xl shadow-xl glass dark:bg-slate-800/80">
+        <h1 class="text-6xl font-black mb-6 animate-pulse">Success Stories</h1>
+        <p class="text-xl mb-8 opacity-90">Discover how companies transformed with us</p>
+        <div class="flex justify-center gap-12">
+          <div><div class="text-3xl font-bold">500+</div><div class="opacity-80">Clients</div></div>
+          <div><div class="text-3xl font-bold">98%</div><div class="opacity-80">Success</div></div>
+          <div><div class="text-3xl font-bold">10M+</div><div class="opacity-80">Users Reached</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="customer-section bg-gradient-to-br from-blue-500 to-purple-600">
+      <div class="customer-card text-center text-white p-8 rounded-3xl shadow-xl glass dark:bg-slate-800/80">
+        <h2 class="text-4xl font-bold mb-4">InnovateCorp</h2>
+        <p class="text-lg mb-6">"Frontend Battle revolutionized our workflow. Their intuitive platform and stellar support made all the difference!"</p>
+        <div class="text-sm opacity-80">John Doe, CTO</div>
+      </div>
+    </section>
+
+    <section class="customer-section bg-gradient-to-br from-green-400 to-blue-500">
+      <div class="customer-card text-center text-white p-8 rounded-3xl shadow-xl glass dark:bg-slate-800/80">
+        <h2 class="text-4xl font-bold mb-4">CreativeMinds Agency</h2>
+        <p class="text-lg mb-6">"Our productivity soared after integrating Frontend Battle. A game-changer for our design and development teams."</p>
+        <div class="text-sm opacity-80">Jane Smith, Lead Designer</div>
+      </div>
+    </section>
+
+    <section class="customer-section bg-gradient-to-br from-yellow-400 to-orange-500">
+      <div class="customer-card text-center text-white p-8 rounded-3xl shadow-xl glass dark:bg-slate-800/80">
+        <h2 class="text-4xl font-bold mb-4">GlobalTech Solutions</h2>
+        <p class="text-lg mb-6">"The scalability and performance we achieved with Frontend Battle were beyond our expectations. Highly recommended!"</p>
+        <div class="text-sm opacity-80">David Lee, CEO</div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const sections = document.querySelectorAll('.customer-section');
+    const dots = document.querySelectorAll('.dot');
+    let currentSlide = 0;
+    let isScrolling = false;
+
+    function goToSlide(index) {
+      if (isScrolling || index < 0 || index >= sections.length) return;
+
+      isScrolling = true;
+
+      // Remove active class from current slide and dot
+      sections[currentSlide].classList.remove('active');
+      dots[currentSlide].classList.remove('active');
+
+      // Update current slide
+      currentSlide = index;
+
+      // Add active class to new slide and dot
+      sections[currentSlide].classList.add('active');
+      dots[currentSlide].classList.add('active');
+
+      // Allow scrolling again after transition
+      setTimeout(() => {
+        isScrolling = false;
+      }, 900); // Match this with the CSS transition duration
+    }
+
+    // Dot Navigation
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => goToSlide(index));
+    });
+
+    // Keyboard Navigation
+    document.addEventListener('keydown', (e) => {
+      if (isScrolling) return;
+      
+      if (e.key === 'ArrowDown' && currentSlide < sections.length - 1) {
+        goToSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowUp' && currentSlide > 0) {
+        goToSlide(currentSlide - 1);
+      }
+    });
+
+    // Touch/Swipe Support
+    let startY = 0;
+    let startTime = 0;
+    
+    document.addEventListener('touchstart', (e) => {
+      startY = e.touches[0].clientY;
+      startTime = Date.now();
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      if (isScrolling) return;
+      
+      const endY = e.changedTouches[0].clientY;
+      const endTime = Date.now();
+      const diff = startY - endY;
+      const timeDiff = endTime - startTime;
+      
+      // Only trigger if swipe was fast enough and long enough
+      if (Math.abs(diff) > 50 && timeDiff < 500) {
+        if (diff > 0 && currentSlide < sections.length - 1) {
+          goToSlide(currentSlide + 1);
+        } else if (diff < 0 && currentSlide > 0) {
+          goToSlide(currentSlide - 1);
+        }
+      }
+    }, { passive: true });
+
+    // Handle mouse wheel scrolling (for touchpad scroll gestures)
+    document.addEventListener('wheel', (e) => {
+        if (isScrolling) return;
+
+        // Determine scroll direction
+        if (e.deltaY > 0 && currentSlide < sections.length - 1) {
+            goToSlide(currentSlide + 1);
+        } else if (e.deltaY < 0 && currentSlide > 0) {
+            goToSlide(currentSlide - 1);
+        }
+        e.preventDefault(); // Prevent default page scroll
+    }, { passive: false }); // Use passive: false to allow preventDefault
+
+
+    // Cursor Ripple Effect
+    document.addEventListener('mousemove', (e) => {
+      const ripple = document.createElement('div');
+      ripple.className = 'cursor-ripple';
+      document.body.appendChild(ripple);
+
+      const size = Math.random() * 50 + 20; // Random size between 20 and 70
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${e.clientX - size / 2}px`;
+      ripple.style.top = `${e.clientY - size / 2}px`;
+
+      ripple.onanimationend = () => ripple.remove();
+    });
+
+    // Theme Toggle Initialization (from script.js)
+    function initializeTheme() {
+        const theme = localStorage.getItem("theme");
+        if (theme === "dark" || (theme === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+    }
+
+    function updateThemeIcon() {
+        const themeToggle = document.getElementById("themeToggle");
+        if (document.documentElement.classList.contains("dark")) {
+            themeToggle.textContent = '☀️'; // Sun icon for dark mode
+        } else {
+            themeToggle.textContent = '🌙'; // Moon icon for light mode
+        }
+    }
+
+    const themeToggle = document.getElementById("themeToggle");
+    themeToggle.addEventListener("click", () => {
+        document.documentElement.classList.toggle("dark");
+        const isDark = document.documentElement.classList.contains("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+        updateThemeIcon();
+    });
+
+    initializeTheme();
+    updateThemeIcon(); // Set initial icon
+  </script>
+</body>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-white dark:bg-[#0f172a] dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Features | Frontend Battle</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
+  <style>
+    *{font-family:Inter,sans-serif;margin:0;padding:0;box-sizing:border-box}
+    .gradient-bg{background:linear-gradient(-45deg,#667eea,#764ba2,#f093fb,#4facfe);background-size:400% 400%;animation:gradientShift 10s ease infinite}
+    @keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+    .glass{background:rgba(255,255,255,0.1);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.2)}
+    .feature-card{transition:all 0.3s ease;position:relative;overflow:hidden}
+    .feature-card:hover{transform:translateY(-5px)}
+    /* The text-gradient class now consistently applies the gradient effect */
+    .text-gradient{background:linear-gradient(45deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    
+    .dark .glass{background:rgba(15,23,42,0.8)}
+    .carousel-indicator.active{background:white}
+    body{transition:all 0.3s ease}
+    
+    /* Enhanced Carousel Styles */
+    .carousel-slide {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s ease;
+    }
+    
+    .carousel-content {
+      transition: all 0.5s ease;
+    }
+    
+    .carousel-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      opacity: 0;
+      transition: all 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .carousel-slide:hover .carousel-overlay {
+      opacity: 1;
+    }
+    
+    .carousel-slide:hover .carousel-content {
+      transform: scale(1.05);
+    }
+    
+    .learn-more-btn {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.5s ease 0.2s;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+    
+    .learn-more-btn:hover {
+      background: linear-gradient(45deg, #764ba2, #667eea);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3);
+    }
+    
+    /* Brand Kit Styles */
+    .brand-kit-item {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .brand-kit-item:hover {
+      background: rgba(59, 130, 246, 0.1) !important;
+      transform: translateX(8px);
+    }
+    
+    .brand-kit-item.selected {
+      background: rgba(59, 130, 246, 0.2) !important;
+      border-left: 4px solid #3b82f6;
+    }
+    
+    .brand-actions {
+      opacity: 0;
+      transition: all 0.3s ease;
+      display: flex;
+      gap: 8px;
+    }
+    
+    .brand-kit-item:hover .brand-actions {
+      opacity: 1;
+    }
+    
+    .action-btn {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #9ca3af;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s ease;
+    }
+    
+    .action-btn:hover {
+      background: rgba(59, 130, 246, 0.2);
+      color: #3b82f6;
+    }
+
+    /* Comprehensive Dark Mode Styles */
+    .dark {
+      color-scheme: dark;
+    }
+    
+    .dark body {
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+    }
+    
+    .dark p, .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, .dark span, .dark div {
+      color: #f8fafc !important;
+    }
+    
+    /* Ensure section backgrounds are dark */
+    .dark section:not(.gradient-bg) {
+      background-color: #0f172a !important;
+    }
+    
+    /* Brand kit container dark mode */
+    .dark .bg-gray-900 {
+      background-color: #1e293b !important;
+    }
+    
+    .dark .bg-gray-800 {
+      background-color: #334155 !important;
+    }
+    
+    /* Footer dark mode */
+    .dark footer {
+      background-color: #020617 !important;
+    }
+    
+    /* Glass effect in dark mode */
+    .dark .glass {
+      background: rgba(15, 23, 42, 0.8) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    /* Text colors for specific elements in dark mode */
+    .dark .text-gray-600 {
+      color: #cbd5e1 !important;
+    }
+    
+    .dark .text-gray-300 {
+      color: #e2e8f0 !important;
+    }
+    
+    .dark .text-gray-400 {
+      color: #94a3b8 !important;
+    }
+    
+    /* Ensure all text elements are white in dark mode */
+    .dark * {
+      color: #f8fafc;
+    }
+    
+    /* Override for gradient text */
+    .dark .text-gradient {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    /* Ensure carousel overlay text stays white */
+    .carousel-overlay h4,
+    .carousel-overlay p {
+      color: white !important;
+    }
+    
+    /* Ensure brand kit text colors */
+    .dark .brand-kit-item span {
+      color: #f8fafc !important;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800 dark:bg-[#0f172a] dark:text-white min-h-screen">
+
+  <header class="fixed w-full top-0 glass z-50 py-4">
+    <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Pixel<span class="text-gradient">Pulse</span></h1>
+      <nav class="hidden md:flex space-x-6">
+        <a href="index.html" class="text-white hover:text-blue-300 transition">Home</a>
+        <a href="customers.html" class="text-white hover:text-blue-300 transition">Customers</a>
+        <a href="features.html" class="text-white hover:text-blue-300 font-semibold">Features</a>
+      </nav>
+      <button id="themeToggle" class="p-2 rounded-full glass hover:bg-white/20 transition">🌙</button>
+    </div>
+  </header>
+
+  <section class="min-h-screen gradient-bg flex items-center justify-center text-center text-white">
+    <div class="px-6">
+      <h1 class="text-6xl md:text-7xl font-black mb-6">Our <span class="text-white">Features</span></h1>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">Discover powerful tools that make Frontend Battle extraordinary</p>
+    </div>
+  </section>
+
+  <section class="py-20 dark:bg-[#0f172a]">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-black mb-4 dark:text-white">Brand <span class="text-gradient">Kits</span></h2>
+        <p class="text-xl text-gray-600 dark:text-gray-300">Professional brand management tools</p>
+      </div>
+      
+      <div class="p-1 rounded-3xl bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500">
+        <div class="bg-gray-900 dark:bg-gray-800 rounded-3xl p-8">
+          <div class="flex justify-between items-center mb-8">
+            <h3 class="text-2xl font-bold text-white">Brand Kits</h3>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition" onclick="addNewBrand()">+ New Brand</button>
+          </div>
+          <div class="space-y-4" id="brandKitsList">
+            <div class="brand-kit-item flex items-center justify-between p-4 bg-gray-800 dark:bg-gray-700 rounded-2xl" data-brand="ecorp">
+              <div class="flex items-center space-x-4">
+                <div class="w-6 h-6 border-2 border-gray-600 rounded-md brand-checkbox"></div>
+                <div class="flex items-center space-x-3">
+                  <div class="w-8 h-8 bg-gradient-to-br from-green-400 to-teal-500 rounded-full"></div>
+                  <span class="text-white font-medium">ECorp</span>
+                  <span class="text-xs text-gray-400 bg-gray-700 px-2 py-1 rounded">Active</span>
+                </div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <div class="brand-actions">
+                  <button class="action-btn" onclick="editBrand('ecorp')">Edit</button>
+                  <button class="action-btn" onclick="duplicateBrand('ecorp')">Copy</button>
+                  <button class="action-btn" onclick="exportBrand('ecorp')">Export</button>
+                </div>
+                <div class="text-gray-400 cursor-pointer" onclick="toggleBrandMenu(this)">⋯</div>
+              </div>
+            </div>
+            <div class="brand-kit-item flex items-center justify-between p-4 bg-gray-800 dark:bg-gray-700 rounded-2xl" data-brand="icorp">
+              <div class="flex items-center space-x-4">
+                <div class="w-6 h-6 border-2 border-gray-600 rounded-md brand-checkbox"></div>
+                <div class="flex items-center space-x-3">
+                  <div class="w-8 h-8 bg-gradient-to-br from-orange-400 to-yellow-500 rounded-full"></div>
+                  <span class="text-white font-medium">ICorp</span>
+                  <span class="text-xs text-gray-400 bg-gray-700 px-2 py-1 rounded">Draft</span>
+                </div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <div class="brand-actions">
+                  <button class="action-btn" onclick="editBrand('icorp')">Edit</button>
+                  <button class="action-btn" onclick="duplicateBrand('icorp')">Copy</button>
+                  <button class="action-btn" onclick="exportBrand('icorp')">Export</button>
+                </div>
+                <div class="text-gray-400 cursor-pointer" onclick="toggleBrandMenu(this)">⋯</div>
+              </div>
+            </div>
+            <div class="brand-kit-item selected flex items-center justify-between p-4 bg-gray-800 dark:bg-gray-700 rounded-2xl" data-brand="agency">
+              <div class="flex items-center space-x-4">
+                <div class="w-6 h-6 bg-blue-500 rounded-md flex items-center justify-center brand-checkbox">
+                  <div class="text-white text-sm">✓</div>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <div class="w-8 h-8 bg-gradient-to-br from-red-400 to-pink-500 rounded-full"></div>
+                  <span class="text-white font-medium">The Agency</span>
+                  <span class="text-xs text-green-400 bg-green-900/30 px-2 py-1 rounded">Published</span>
+                </div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <div class="brand-actions">
+                  <button class="action-btn" onclick="editBrand('agency')">Edit</button>
+                  <button class="action-btn" onclick="duplicateBrand('agency')">Copy</button>
+                  <button class="action-btn" onclick="exportBrand('agency')">Export</button>
+                </div>
+                <div class="text-gray-400 cursor-pointer" onclick="toggleBrandMenu(this)">⋯</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 dark:bg-[#0f172a]">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-black mb-4 dark:text-white">Interactive <span class="text-gradient">Carousel</span></h2>
+        <p class="text-xl text-gray-600 dark:text-gray-300">Hover to explore amazing features</p>
+      </div>
+      <div class="relative overflow-hidden rounded-3xl">
+        <div class="flex transition-transform duration-500" id="carousel">
+          <div class="carousel-slide min-w-full bg-gradient-to-br from-purple-600 to-blue-600">
+            <div class="carousel-content p-12 text-center text-white">
+              <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 text-white">⚡</div>
+              <h3 class="text-4xl font-bold mb-4">Lightning Fast</h3>
+              <p class="text-xl opacity-90">Blazing-fast load times and smooth interactions</p>
+            </div>
+            <div class="carousel-overlay">
+              <h4 class="text-3xl font-bold mb-4 text-white">Optimized Performance</h4>
+              <p class="text-lg mb-6 max-w-md text-white">Our advanced caching and optimization techniques ensure your applications load in under 2 seconds, providing exceptional user experience.</p>
+              <a href="#performance" class="learn-more-btn">Learn More</a>
+            </div>
+          </div>
+          <div class="carousel-slide min-w-full bg-gradient-to-br from-pink-500 to-rose-600">
+            <div class="carousel-content p-12 text-center text-white">
+              <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 text-white">📱</div>
+              <h3 class="text-4xl font-bold mb-4">Mobile Responsive</h3>
+              <p class="text-xl opacity-90">Seamless experience across all devices</p>
+            </div>
+            <div class="carousel-overlay">
+              <h4 class="text-3xl font-bold mb-4 text-white">Adaptive Design</h4>
+              <p class="text-lg mb-6 max-w-md text-white">Our responsive design ensures your content looks perfect on any screen size, from desktops to mobile phones, enhancing accessibility and user satisfaction.</p>
+              <a href="#responsive" class="learn-more-btn">Learn More</a>
+            </div>
+          </div>
+          <div class="carousel-slide min-w-full bg-gradient-to-br from-teal-500 to-cyan-600">
+            <div class="carousel-content p-12 text-center text-white">
+              <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 text-white">💡</div>
+              <h3 class="text-4xl font-bold mb-4">Intuitive Interface</h3>
+              <p class="text-xl opacity-90">Easy to use, delightful to navigate</p>
+            </div>
+            <div class="carousel-overlay">
+              <h4 class="text-3xl font-bold mb-4 text-white">User-Centric Design</h4>
+              <p class="text-lg mb-6 max-w-md text-white">We prioritize user experience with clean layouts, clear navigation, and interactive elements that make your journey effortless and enjoyable.</p>
+              <a href="#interface" class="learn-more-btn">Learn More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-center mt-8 space-x-3" id="carousel-indicators">
+        <button class="carousel-indicator w-3 h-3 bg-gray-400 rounded-full"></button>
+        <button class="carousel-indicator w-3 h-3 bg-gray-400 rounded-full"></button>
+        <button class="carousel-indicator w-3 h-3 bg-gray-400 rounded-full"></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 dark:bg-[#0f172a]">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-black mb-4 dark:text-white">Growth <span class="text-gradient">Metrics</span></h2>
+        <p class="text-xl text-gray-600 dark:text-gray-300">Track your progress with real-time data</p>
+      </div>
+      <div class="glass dark:bg-gray-800/80 p-8 rounded-3xl shadow-xl">
+        <canvas id="growthChart" class="w-full h-80"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-gray-800 text-white py-12 dark:bg-gray-950">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <p class="dark:text-white">&copy; 2025 Frontend Battle. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Theme Toggle Functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
+    // Check for saved theme preference or default to 'dark'
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    html.classList.toggle('dark', currentTheme === 'dark');
+    themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = html.classList.contains('dark');
+      html.classList.toggle('dark', !isDark);
+      localStorage.setItem('theme', !isDark ? 'dark' : 'light');
+      themeToggle.textContent = !isDark ? '☀️' : '🌙';
+      
+      // Update chart colors when theme changes
+      updateChartColors();
+    });
+
+    // Carousel Logic
+    const carousel = document.getElementById('carousel');
+    const indicators = document.querySelectorAll('.carousel-indicator');
+    let currentIndex = 0;
+
+    function updateCarousel() {
+      carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+      indicators.forEach((indicator, index) => {
+        if (index === currentIndex) {
+          indicator.classList.add('bg-blue-500');
+          indicator.classList.remove('bg-gray-400');
+        } else {
+          indicator.classList.remove('bg-blue-500');
+          indicator.classList.add('bg-gray-400');
+        }
+      });
+    }
+
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        currentIndex = index;
+        updateCarousel();
+      });
+    });
+
+    // Auto-advance carousel
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % indicators.length;
+      updateCarousel();
+    }, 5000); // Change slide every 5 seconds
+
+    updateCarousel(); // Initial update
+
+    // Brand Kit Functions (placeholders)
+    function addNewBrand() {
+      alert('Add new brand functionality would be implemented here');
+    }
+
+    function editBrand(brandId) {
+      alert(`Edit brand: ${brandId}`);
+    }
+
+    function duplicateBrand(brandId) {
+      alert(`Duplicate brand: ${brandId}`);
+    }
+
+    function exportBrand(brandId) {
+      alert(`Export brand: ${brandId}`);
+    }
+
+    function toggleBrandMenu(element) {
+      alert('Brand menu toggle');
+    }
+
+    // Chart.js Logic
+    const ctx = document.getElementById('growthChart').getContext('2d');
+
+    const getChartColors = () => {
+        const isDarkMode = document.documentElement.classList.contains('dark');
+        return {
+            gridColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+            textColor: isDarkMode ? '#cbd5e1' : '#4b5563',
+            lineColor: isDarkMode ? '#60a5fa' : '#3b82f6',
+            pointBackgroundColor: isDarkMode ? '#3b82f6' : '#667eea',
+            targetLineColor: isDarkMode ? '#94a3b8' : '#999',
+            targetLabelColor: isDarkMode ? '#94a3b8' : '#999'
+        };
+    };
+
+    let chartColors = getChartColors();
+
+    const data = {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+      datasets: [{
+        label: 'Revenue',
+        data: [650, 590, 800, 810, 560, 550, 700],
+        fill: true,
+        backgroundColor: 'rgba(102, 126, 234, 0.2)',
+        borderColor: chartColors.lineColor,
+        tension: 0.4,
+        pointBackgroundColor: chartColors.pointBackgroundColor,
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: chartColors.lineColor,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+      }]
+    };
+
+    const config = {
+      type: 'line',
+      data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: chartColors.textColor
+            }
+          },
+          tooltip: {
+            backgroundColor: chartColors.gridColor,
+            titleColor: chartColors.textColor,
+            bodyColor: chartColors.textColor
+          },
+          annotation: {
+            annotations: {
+              line1: {
+                type: 'line',
+                yMin: 500,
+                yMax: 500,
+                borderColor: chartColors.targetLineColor,
+                borderWidth: 2,
+                borderDash: [6, 6],
+                label: {
+                  content: 'Target 2030',
+                  enabled: true,
+                  position: 'end',
+                  color: chartColors.targetLabelColor
+                }
+              },
+              line2: {
+                type: 'line',
+                yMin: 600,
+                yMax: 600,
+                borderColor: chartColors.targetLineColor,
+                borderWidth: 2,
+                borderDash: [4, 4],
+                label: {
+                  content: 'Target 2025',
+                  enabled: true,
+                  position: 'end',
+                  color: chartColors.targetLabelColor
+                }
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: chartColors.textColor
+            },
+            grid: {
+              color: chartColors.gridColor
+            }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              color: chartColors.textColor,
+              callback: function(value) {
+                return value;
+              }
+            },
+            grid: {
+              color: chartColors.gridColor
+            }
+          }
+        },
+        animation: {
+          duration: 2000,
+          easing: 'easeInOutQuart'
+        }
+      }
+    };
+
+    const growthChart = new Chart(ctx, config);
+
+    // Update chart data periodically
+    setInterval(() => {
+        const newRevenue = data.datasets[0].data.map(value => value + Math.floor(Math.random() * 50) - 25);
+        data.datasets[0].data = newRevenue;
+        growthChart.update();
+    }, 3000); // Update every 3 seconds
+
+    // Function to update chart colors
+    function updateChartColors() {
+        chartColors = getChartColors();
+        
+        // Update dataset colors
+        growthChart.data.datasets[0].borderColor = chartColors.lineColor;
+        growthChart.data.datasets[0].pointBackgroundColor = chartColors.pointBackgroundColor;
+
+        // Update scale and grid colors
+        growthChart.options.scales.x.ticks.color = chartColors.textColor;
+        growthChart.options.scales.x.grid.color = chartColors.gridColor;
+        growthChart.options.scales.y.ticks.color = chartColors.textColor;
+        growthChart.options.scales.y.grid.color = chartColors.gridColor;
+
+        // Update legend and tooltip colors
+        growthChart.options.plugins.legend.labels.color = chartColors.textColor;
+        growthChart.options.plugins.tooltip.backgroundColor = chartColors.gridColor;
+        growthChart.options.plugins.tooltip.titleColor = chartColors.textColor;
+        growthChart.options.plugins.tooltip.bodyColor = chartColors.textColor;
+
+        // Update annotation colors
+        if (growthChart.options.plugins.annotation && growthChart.options.plugins.annotation.annotations) {
+            growthChart.options.plugins.annotation.annotations.line1.borderColor = chartColors.targetLineColor;
+            growthChart.options.plugins.annotation.annotations.line1.label.color = chartColors.targetLabelColor;
+            growthChart.options.plugins.annotation.annotations.line2.borderColor = chartColors.targetLineColor;
+            growthChart.options.plugins.annotation.annotations.line2.label.color = chartColors.targetLabelColor;
+        }
+
+        growthChart.update();
+    }
+  </script>
+</body>
+</html>

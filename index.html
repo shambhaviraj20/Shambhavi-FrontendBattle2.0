@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frontend Battle 2.0 | Home</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Animated Gradient Background */
+        .gradient-bg {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glass Morphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Floating Animation */
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Particle Effect */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: particle-float 20s linear infinite;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Glow Effect */
+        .glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .glow-purple {
+            box-shadow: 0 0 30px rgba(147, 51, 234, 0.4);
+        }
+
+        /* Loader Enhancement */
+        #loader {
+            opacity: 1;
+            pointer-events: auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        #loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        body.loading {
+            overflow: hidden;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            z-index: 9999;
+            transition: width 0.3s ease;
+        }
+
+        /* Button Hover Effects */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-shine::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-shine:hover::before {
+            left: 100%;
+        }
+
+        /* Feature Card Hover */
+        .feature-card {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Text Animation */
+        .text-gradient {
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        /* Dark mode specific styles */
+        .dark {
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+        }
+
+        .dark .gradient-bg {
+            background: linear-gradient(-45deg, #1e3a8a, #581c87, #be185d, #dc2626, #0284c7, #0891b2);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.8) !important;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dark .glass-dark {
+            background: rgba(15, 23, 42, 0.9) !important;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dark .feature-card {
+            background: rgba(15, 23, 42, 0.8) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dark .feature-card::before {
+            background: linear-gradient(45deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+        }
+
+        /* Ensure all cards and sections are dark */
+        .dark section {
+            background-color: transparent !important;
+        }
+
+        .dark .bg-white {
+            background-color: #1e293b !important;
+        }
+
+        .dark .bg-gray-100 {
+            background-color: #0f172a !important;
+        }
+
+        .dark .bg-gray-900 {
+            background-color: #0f172a !important;
+        }
+
+        .dark .text-gray-800 {
+            color: #f8fafc !important;
+        }
+
+        .dark .text-gray-600 {
+            color: #cbd5e1 !important;
+        }
+
+        .dark .text-gray-500 {
+            color: #94a3b8 !important;
+        }
+
+        .dark .text-gray-400 {
+            color: #64748b !important;
+        }
+
+        .dark .border-gray-300 {
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .dark .border-gray-600 {
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        /* Theme transition for all elements */
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+        }
+        /* Dark mode scrollbar */
+        .dark ::-webkit-scrollbar-track {
+            background: #374151;
+        }
+    </style>
+</head>
+<body class="loading bg-white text-gray-800 dark:bg-slate-900 dark:text-white transition-colors duration-500">
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="particle" style="left: 10%; width: 4px; height: 4px; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; width: 6px; height: 6px; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 30%; width: 3px; height: 3px; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 40%; width: 5px; height: 5px; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 50%; width: 4px; height: 4px; animation-delay: 8s;"></div>
+        <div class="particle" style="left: 60%; width: 6px; height: 6px; animation-delay: 10s;"></div>
+        <div class="particle" style="left: 70%; width: 3px; height: 3px; animation-delay: 12s;"></div>
+        <div class="particle" style="left: 80%; width: 5px; height: 5px; animation-delay: 14s;"></div>
+        <div class="particle" style="left: 90%; width: 4px; height: 4px; animation-delay: 16s;"></div>
+    </div>
+
+    <div id="loader" class="fixed inset-0 z-[9999] flex items-center justify-center transition-opacity duration-700">
+        <div class="text-center">
+            <div class="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white mb-4"></div>
+            <div class="text-white text-xl font-semibold">Loading Experience...</div>
+        </div>
+    </div>
+
+    <header class="fixed w-full top-0 glass z-50 py-4">
+        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Pixel<span class="text-gradient">Pulse</span></h1>
+            <nav class="hidden md:flex space-x-6">
+                <a href="index.html" class="text-white hover:text-blue-300 transition font-semibold">Home</a>
+                <a href="customers.html" class="text-white hover:text-blue-300 transition">Customers</a>
+                <a href="features.html" class="text-white hover:text-blue-300 transition">Features</a>
+            </nav>
+            <button id="themeToggle" class="p-2 rounded-full glass hover:bg-white/20 transition">🌙</button>
+        </div>
+    </header>
+
+    <main id="mainContent" class="opacity-0 transition-opacity duration-700">
+        <section class="gradient-bg min-h-screen flex items-center justify-center text-center text-white relative overflow-hidden p-6">
+            <div class="relative z-10">
+                <h1 class="text-6xl md:text-7xl font-extrabold leading-tight mb-6" data-aos="fade-up" data-aos-duration="1000">
+                    Your Vision, Our <span class="text-white drop-shadow-lg">Frontend</span>
+                </h1>
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-10 opacity-90" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+                    Building beautiful, performant, and accessible web experiences with cutting-edge technology.
+                </p>
+                <div class="flex justify-center space-x-4" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
+                    <a href="#features" class="btn-shine bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full text-lg font-semibold transition duration-300 transform hover:scale-105 glow">
+                        Explore Features
+                    </a>
+                    <a href="#contact" class="btn-shine bg-white/20 hover:bg-white/30 text-white px-8 py-3 rounded-full text-lg font-semibold transition duration-300 transform hover:scale-105 border border-white/30">
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="py-20 bg-white dark:bg-[#0f172a]">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
+                    <h2 class="text-5xl font-black mb-4 text-gray-800 dark:text-white">Why Choose <span class="text-gradient">Us</span></h2>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">Unleashing the power of modern web technologies</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="feature-card glass dark:bg-slate-800/80 p-8 rounded-2xl shadow-lg flex flex-col items-center text-center transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-16 h-16 bg-blue-500 text-white rounded-full flex items-center justify-center mb-6 text-3xl">
+                            <i data-feather="zap"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-800 dark:text-white">Blazing Fast</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Optimized performance ensures your site loads in milliseconds.</p>
+                    </div>
+
+                    <div class="feature-card glass dark:bg-slate-800/80 p-8 rounded-2xl shadow-lg flex flex-col items-center text-center transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center mb-6 text-3xl">
+                            <i data-feather="smartphone"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-800 dark:text-white">Fully Responsive</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Flawless experience on any device, big or small.</p>
+                    </div>
+
+                    <div class="feature-card glass dark:bg-slate-800/80 p-8 rounded-2xl shadow-lg flex flex-col items-center text-center transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+                        <div class="w-16 h-16 bg-purple-500 text-white rounded-full flex items-center justify-center mb-6 text-3xl">
+                            <i data-feather="edit"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-800 dark:text-white">Customizable</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Tailored solutions to fit your unique brand identity.</p>
+                    </div>
+
+                    <div class="feature-card glass dark:bg-slate-800/80 p-8 rounded-2xl shadow-lg flex flex-col items-center text-center transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="400">
+                        <div class="w-16 h-16 bg-red-500 text-white rounded-full flex items-center justify-center mb-6 text-3xl">
+                            <i data-feather="shield"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-800 dark:text-white">Secure & Reliable</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Robust architecture ensures data safety and uptime.</p>
+                    </div>
+
+                    <div class="feature-card glass dark:bg-slate-800/80 p-8 rounded-2xl shadow-lg flex flex-col items-center text-center transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="500">
+                        <div class="w-16 h-16 bg-indigo-500 text-white rounded-full flex items-center justify-center mb-6 text-3xl">
+                            <i data-feather="bar-chart-2"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-800 dark:text-white">SEO Friendly</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Built with best practices for higher search rankings.</p>
+                    </div>
+
+                    <div class="feature-card glass dark:bg-slate-800/80 p-8 rounded-2xl shadow-lg flex flex-col items-center text-center transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="600">
+                        <div class="w-16 h-16 bg-yellow-500 text-white rounded-full flex items-center justify-center mb-6 text-3xl">
+                            <i data-feather="life-buoy"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-800 dark:text-white">Dedicated Support</h3>
+                        <p class="text-gray-600 dark:text-gray-300">24/7 assistance for all your queries and needs.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-gradient-to-r from-blue-600 to-purple-700 text-white text-center">
+            <div class="max-w-4xl mx-auto px-6" data-aos="zoom-in" data-aos-duration="1000">
+                <h2 class="text-5xl font-black mb-6">Ready to Transform Your Web Presence?</h2>
+                <p class="text-xl mb-10 opacity-90">Join countless satisfied clients who have elevated their digital presence with Frontend Battle's expertise.</p>
+                <a href="#contact" class="btn-shine bg-white text-blue-600 px-10 py-4 rounded-full text-xl font-bold transition duration-300 transform hover:scale-105 shadow-lg">
+                    Start Your Project Today
+                </a>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 bg-gray-100 dark:bg-gray-900">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
+                    <h2 class="text-5xl font-black mb-4 text-gray-800 dark:text-white">Get In <span class="text-gradient">Touch</span></h2>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">We'd love to hear from you!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+                    <div class="glass dark:bg-slate-800/80 p-8 rounded-2xl shadow-lg" data-aos="fade-right" data-aos-duration="1000">
+                        <h3 class="text-3xl font-bold mb-6 text-gray-800 dark:text-white">Send Us a Message</h3>
+                        <form class="space-y-6">
+                            <div>
+                                <label for="name" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Name</label>
+                                <input type="text" id="name" name="name" class="w-full p-3 rounded-lg bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your Name">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Email</label>
+                                <input type="email" id="email" name="email" class="w-full p-3 rounded-lg bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="your@example.com">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Message</label>
+                                <textarea id="message" name="message" rows="5" class="w-full p-3 rounded-lg bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your message..."></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="glass dark:bg-slate-800/80 p-8 rounded-2xl shadow-lg" data-aos="fade-left" data-aos-duration="1000">
+                        <h3 class="text-3xl font-bold mb-6 text-gray-800 dark:text-white">Our Information</h3>
+                        <div class="space-y-4 text-gray-700 dark:text-gray-300">
+                            <p class="flex items-center"><i data-feather="map-pin" class="mr-3 text-blue-500"></i> 123 Dev Street, Web City, 98765</p>
+                            <p class="flex items-center"><i data-feather="phone" class="mr-3 text-blue-500"></i> +1 (123) 456-7890</p>
+                            <p class="flex items-center"><i data-feather="mail" class="mr-3 text-blue-500"></i> info@frontendbattle.com</p>
+                            <p class="flex items-center"><i data-feather="clock" class="mr-3 text-blue-500"></i> Mon - Fri: 9:00 AM - 5:00 PM</p>
+                        </div>
+                        <div class="mt-8">
+                            <h4 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Follow Us</h4>
+                            <div class="flex space-x-4">
+                                <a href="https://twitter.com/i/flow/login?redirect_after_login=%2Fwebnd_iitbbs" target="_blank" aria-label="Twitter"
+                                   class="w-12 h-12 rounded-full bg-white/10 dark:bg-slate-800/50 backdrop-blur-xl border border-white/20 dark:border-slate-700 flex items-center justify-center hover:scale-110 hover:text-blue-400 transition-all duration-300">
+                                    <i data-feather="twitter"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/company/webnd-iitbbs/" target="_blank" aria-label="LinkedIn"
+                                   class="w-12 h-12 rounded-full bg-white/10 dark:bg-slate-800/50 backdrop-blur-xl border border-white/20 dark:border-slate-700 flex items-center justify-center hover:scale-110 hover:text-blue-400 transition-all duration-300">
+                                    <i data-feather="linkedin"></i>
+                                </a>
+                                <a href="https://www.instagram.com/webnd.iitbbs?igsh=MXg1ZnpzNmllbGgyZw==" target="_blank" aria-label="Instagram"
+                                   class="w-12 h-12 rounded-full bg-white/10 dark:bg-slate-800/50 backdrop-blur-xl border border-white/20 dark:border-slate-700 flex items-center justify-center hover:scale-110 hover:text-blue-400 transition-all duration-300">
+                                    <i data-feather="instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center text-gray-500 dark:text-gray-400 border-t border-gray-300/20 dark:border-slate-700 pt-8 mt-12">
+                    <p>&copy; 2025 Frontend Battle. All rights reserved. Made with cutting-edge web technologies.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+        feather.replace();
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            duration: 1000,
+        });
+    </script>
+</body>
+</html>
