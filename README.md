@@ -39,10 +39,10 @@ Pixel Pulse is a modern, responsive web application designed to showcase cutting
 * **Growth Metrics (Features Page):** Observe the real-time updating chart showing dummy revenue data.
 
 ## Project Structure
-├── index.html          # Homepage
-├── features.html       # Features demonstration page
-├── script.js           # JavaScript for theme toggle, carousel, and chart logic
-└── README.md
+- index.html          # Homepage
+- features.html       # Features demonstration page
+- script.js           # JavaScript for theme toggle, carousel, and chart logic
+- README.md
 
 
 ## License
