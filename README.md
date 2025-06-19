@@ -1,8 +1,10 @@
-# Frontend Battle 2.0
+# Frontend Battle 2.0 | Pixel Pulse
 
-## Unleash Your Web Superpowers
+## Test Link:  https://shambhaviraj20.github.io/Shambhavi-FrontendBattle2.0/
 
-Frontend Battle 2.0 is a modern, responsive web application designed to showcase cutting-edge frontend development practices. It features a sleek design, interactive elements, and a seamless user experience, including a dynamic dark mode.
+## Introduction
+
+Pixel Pulse is a modern, responsive web application designed to showcase cutting-edge frontend development practices. It features a sleek design, interactive elements, and a seamless user experience, including a dynamic dark mode.
 
 ## Features
 
@@ -27,26 +29,6 @@ Frontend Battle 2.0 is a modern, responsive web application designed to showcase
 * **AOS (Animate On Scroll):** Library for scroll animations.
 * **Google Fonts (Inter):** For modern and clean typography.
 
-## Setup and Installation
-
-To get a local copy up and running, follow these simple steps.
-
-### Prerequisites
-
-* A web browser (Chrome, Firefox, Edge, etc.) to view the project.
-* A code editor (VS Code, Sublime Text, etc.).
-
-### Installation
-
-1.  **Clone the repository (if applicable):**
-    ```bash
-    git clone <your-repository-url>
-    cd frontend-battle-2.0
-    ```
-    *(If you've received the files directly, skip this step and ensure `index.html`, `features.html`, `script.js`, and any other assets are in a single project folder.)*
-
-2.  **Open the files:**
-    Simply open `index.html` or `features.html` directly in your web browser. Drag and drop the `index.html` file into your browser, or right-click and select "Open with" your preferred browser.
 
 ## Usage
 
@@ -61,15 +43,7 @@ To get a local copy up and running, follow these simple steps.
 ├── features.html       # Features demonstration page
 ├── script.js           # JavaScript for theme toggle, carousel, and chart logic
 └── README.md
-## Contributing
 
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
 
 ## License
 
@@ -78,5 +52,5 @@ Distributed under the MIT License. See `LICENSE` for more information. *(Note: Y
 ## Contact
 
 Your Name - Shambhavi Raj | shambhavi.raj0620@gmail.com
-Test Link: 
+
 
